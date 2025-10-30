@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Secure Login Form</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+background-color: #f3f3f3;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+}
+form {
+background-color: white;
+padding: 20px;
+border-radius: 10px;
+box-shadow: 0 0 10px gray;
+width: 320px;
+}
+input {
+width: 100%;
+padding: 8px;
+margin: 8px 0;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+button {
+width: 100%;
+padding: 10px;
+background-color: #4CAF50;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+button:hover {
+background-color: #45a049;
+}
+
+.error {
+color: red;
+font-size: 13px;
+}
+.success {
+color: green;
+font-size: 13px;
+}
+</style>
+</head>
+<body>
+<form id="loginForm">
+<h2>Secure Login</h2>
+<label for="userid">Username:</label>
+<input type="text" id="userid" name="userid" required>
+<div id="userMsg" class="error"></div>
+<label for="password">Password:</label>
+<input type="password" id="password" name="password" required>
+<div id="passMsg" class="error"></div>
+<button type="submit">Login</button>
+<p id="formMsg"></p>
+</form>
+<script>
+const form = document.getElementById('loginForm');
+const userField = document.getElementById('userid');
+const passField = document.getElementById('password');
+const userMsg = document.getElementById('userMsg');
+const passMsg = document.getElementById('passMsg');
+const formMsg = document.getElementById('formMsg');
+form.addEventListener('submit', function(e) {
+e.preventDefault();
+let valid = true;
+const username = userField.value.trim();
+const password = passField.value.trim();
+userMsg.textContent = "";
+passMsg.textContent = "";
+formMsg.textContent = "";
+const usernamePattern = /^[A-Za-z][A-Za-z0-9_]{2,15}$/; // start letter, 3–16 chars
+if (!usernamePattern.test(username)) {
+userMsg.textContent = "Username must start with a letter and contain 3–16 letters, digits, or underscores.";
+valid = false;
+}
+const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+if (!passwordPattern.test(password)) {
+passMsg.textContent = "Password must be 8+ chars with uppercase, lowercase, number, and special character.";
+valid = false;
+
+}
+const sqlPattern = /(SELECT|INSERT|DELETE|UPDATE|DROP|UNION|ALTER|--|;|'|")/i;
+if (sqlPattern.test(username) || sqlPattern.test(password)) {
+formMsg.textContent = "❌ SQL keywords or special characters not allowed.";
+formMsg.className = "error";
+valid = false;
+}
+if (valid) {
+formMsg.textContent = "✅All inputs are valid. Form ready for secure submission.";
+formMsg.className = "success";
+} else {
+formMsg.className = "error";
+}
+});
+</script>
+</body>
+</html>

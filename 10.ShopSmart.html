@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Personalized E-Commerce Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+      margin: 20px;
+    }
+    h1 { color: #333; }
+    .products, .suggestions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .product {
+      background: white;
+      border: 1px solid #ccc;
+      padding: 10px;
+      width: 120px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .product:hover { transform: scale(1.05); }
+  </style>
+</head>
+<body>
+  <h1>🛍️ Welcome to ShopSmart</h1>
+  <p>Click on a product you like to see similar recommendations!</p>
+
+  <div class="products" id="productList">
+    <div class="product" onclick="viewProduct('T-Shirt', 'clothing')">👕 T-Shirt</div>
+    <div class="product" onclick="viewProduct('Jeans', 'clothing')">👖 Jeans</div>
+    <div class="product" onclick="viewProduct('Shoes', 'clothing')">👟 Shoes</div>
+    <div class="product" onclick="viewProduct('Mobile', 'electronics')">📱 Mobile</div>
+    <div class="product" onclick="viewProduct('Laptop', 'electronics')">💻 Laptop</div>
+    <div class="product" onclick="viewProduct('Headphones', 'electronics')">🎧 Headphones</div>
+  </div>
+
+  <h2>🧩 Recommended for You</h2>
+  <div class="suggestions" id="recommendations">No recommendations yet.</div>
+
+  <script>
+    // Product database: each product belongs to a category
+    const products = [
+      { name: "T-Shirt", category: "clothing" },
+      { name: "Jeans", category: "clothing" },
+      { name: "Shoes", category: "clothing" },
+      { name: "Mobile", category: "electronics" },
+      { name: "Laptop", category: "electronics" },
+      { name: "Headphones", category: "electronics" }
+    ];
+
+    // Store user's viewed categories
+    let viewedCategories = [];
+
+    // Function to handle product click
+    function viewProduct(name, category) {
+      alert("You viewed: " + name);
+      viewedCategories.push(category);
+      showRecommendations(category);
+    }
+
+    // Function to show related products
+    function showRecommendations(category) {
+      const related = products.filter(p => p.category === category);
+      const container = document.getElementById("recommendations");
+
+      container.innerHTML = related.map(p => `<div class='product'>${p.name}</div>`).join("");
+    }
+  </script>
+</body>
+</html>

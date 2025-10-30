@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1> Movie Recommender</h1>
+
+<!-- Step 1: Choose a movie you liked -->
+<label>Choose a movie you liked: </label>
+<select id="movieSelect">
+<option value="">-- Select a Movie --</option>
+<option value="Star Wars">Star Wars</option>
+<option value="The Matrix">The Matrix</option>
+<option value="Inception">Inception</option>
+<option value="The Avengers">The Avengers</option>
+<option value="Titanic">Titanic</option>
+<option value="The Notebook">The Notebook</option>
+<option value="Joker">Joker</option>
+<option value="Iron Man">Iron Man</option>
+</select>
+
+<br><br>
+
+<!-- Step 2: Get recommendation -->
+<button onclick="recommend()"> Recommend Movies</button>
+
+<br><br>
+
+<!-- Result display -->
+<p><strong>You liked:</strong> <span id="liked">-</span></p>
+<p><strong>Recommendations:</strong> <span id="result">Select a movie
+above!</span></p>
+
+<script>
+// Database: movie → its genres
+const movieGenres = {
+"Star Wars": ["action", "scifi"],
+"The Matrix": ["action", "scifi"],
+"Inception": ["action", "scifi"],
+"The Avengers": ["action", "scifi"],
+"Iron Man": ["action", "scifi"],
+"Titanic": ["romance", "drama"],
+"The Notebook": ["romance", "drama"],
+"Joker": ["drama", "thriller"]
+};
+
+function recommend() {
+// Get the movie user selected
+const movie = document.getElementById("movieSelect").value;
+
+// If nothing selected
+if (movie === "") {
+alert(" Please select a movie!");
+return;
+
+}
+
+// Show the selected movie
+document.getElementById("liked").textContent = movie;
+
+// Get the genres of that movie
+const myGenres = movieGenres[movie];
+
+// This will store recommended movies
+const recList = [];
+
+// Check every movie in the database
+for (const title in movieGenres) {
+if (title !== movie) { // Skip the same movie
+const movieHasGenre = movieGenres[title]; // Get genres of this movie
+
+// Check if it shares any genre
+if (movieHasGenre.some(g => myGenres.includes(g))) {
+recList.push(title); // Add to recommendations
+}
+}
+}
+
+// Show only up to 3 recommendations
+let show = "";
+if (recList.length === 0) {
+show = "No similar movies found.";
+} else if (recList.length === 1) {
+
+show = recList[0];
+} else if (recList.length === 2) {
+show = recList[0] + ", " + recList[1];
+} else {
+show = recList[0] + ", " + recList[1] + ", " + recList[2];
+}
+
+// Display the result
+document.getElementById("result").textContent = show;
+}
+</script>
+
+</body>
+</html>

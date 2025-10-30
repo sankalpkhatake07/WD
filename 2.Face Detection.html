@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Face Detection</title>
+
+  <!-- Load TensorFlow.js and BlazeFace model -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
+
+  <style>
+    body { text-align:center; 
+        
+    font-family:sans-serif; margin-top:30px; }
+
+    canvas { 
+        border:2px solid #4caf50;
+         margin-top:10px; }
+  </style>
+</head>
+<body>
+
+  <h2>Face Detection App</h2>
+  <input type="file" id="fileInput" accept="image/*"><br>
+  <canvas id="canvas"></canvas>
+ 
+  <script>
+    let model;   
+
+//      // Step 1: Load the model
+  blazeface.load().then(function(m) {
+    model = m;
+    alert("Model Loaded!");
+  });
+
+    // Step 2: When user uploads an image
+    document.getElementById("fileInput").addEventListener("change", async (e) => {
+      if (!model) return alert("Model not ready yet!");
+
+      // Create <img> element to read file
+      const img = new Image();
+      img.src = URL.createObjectURL(e.target.files[0]);
+
+      img.onload = async () => {
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        // Step 3: Detect faces
+        const faces = await model.estimateFaces(canvas);
+        if (faces.length === 0) {
+          alert("No faces found!");
+          return;
+        }
+        // Step 4: Draw red rectangles around detected faces
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 2;
+        faces.forEach((face, i) => {
+          const [x1, y1] = face.topLeft;
+          const [x2, y2] = face.bottomRight;
+          const w = x2 - x1, h = y2 - y1;
+          ctx.strokeRect(x1, y1, w, h);
+          ctx.fillStyle = "red";
+          ctx.font = "16px Arial";
+          ctx.fillText(`Face ${i+1}`, x1, y1 - 5);
+        });
+      };
+    });
+  </script>
+
+</body>
+</html>

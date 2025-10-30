@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spam Detection System</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      text-align: center;
+      margin: 0;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    textarea {
+      width: 80%;
+      height: 100px;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 20px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      resize: none;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #0078d7;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 25px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📩 Spam Detection System</h1>
+  <p>This simple webpage checks if a message is <b>Spam</b> or <b>Safe</b> using JavaScript logic.</p>
+
+  <!-- Text box to enter message -->
+  <textarea id="message" placeholder="Enter your message here..."></textarea><br>
+
+  <!-- Button to start checking -->
+  <button onclick="runCheck()">Check Message</button>
+
+  <!-- Area to show the result -->
+  <div id="result"></div>
+
+  <script>
+    // Step 1: Common spam and stop words
+    const spamWords = ["win", "free", "click", "prize", "cash", "urgent", "won", "money", "reward"];
+    const stopwords = ["is","the","at","which","on","a","an","and","or","but","you","i","to","for"];
+
+    // Step 2: Stemmer - removes endings like 'ing', 'ed', 's'
+    function stem(word) {
+      return word.replace(/ing$|ed$|s$/, '');
+    }
+
+    // Step 3: Clean text by removing links and special characters
+    function cleanText(text) {
+      text = text.replace(/https?:\/\/\S+/g, ''); // remove URLs
+      text = text.replace(/[^a-zA-Z\s]/g, '');    // remove symbols
+      return text;
+    }
+
+    // Step 4: Preprocessing - lowercase, clean, remove stopwords, and stem
+    function preprocess(text) {
+      text = text.toLowerCase();
+      text = cleanText(text);
+      let tokens = text.split(/\s+/); // split into words
+      tokens = tokens.filter(word => !stopwords.includes(word)); // remove stopwords
+      tokens = tokens.map(word => stem(word)); // stem words
+      return tokens;
+    }
+
+    // Step 5: Check if message has spam words
+    function checkSpam(msg) {
+      const tokens = preprocess(msg);
+      let score = 0;
+      let found = [];
+
+      // Check each word — if it matches spamWords, increase score
+      tokens.forEach(word => {
+        if (spamWords.includes(word)) {
+          score += 20;
+          found.push(word);
+        }
+      });
+
+      // Bonus points if message contains "!"
+      if (msg.includes("!") && found.length) {
+        score += 10;
+      }
+
+      // Keep score under 100
+      const normalizedScore = Math.min(score, 100);
+
+      // If score > 30 → Spam, else Safe
+      const result = normalizedScore > 30
+        ? ` SPAM! (${normalizedScore}/100) — Words found: ${found.join(", ")}`
+        : " Safe Message";
+
+      return result;
+    }
+
+    // Step 6: Main function called when button is clicked
+    function runCheck() {
+      const el = document.getElementById('message');
+      const resultEl = document.getElementById('result');
+      const text = el ? el.value : '';
+
+      if (!text.trim()) {
+        resultEl.textContent = "Please enter a message!";
+        return;
+      }
+
+      // Get result and show it on webpage
+      const res = checkSpam(text);
+      resultEl.textContent = res;
+    }
+  </script>
+
+</body>
+</html>

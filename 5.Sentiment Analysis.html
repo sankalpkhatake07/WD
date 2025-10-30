@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sentiment Analysis Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      background-color: #f0f8ff;
+    }
+
+
+    textarea {
+      width: 300px;
+      height: 100px;
+      padding: 10px;
+      border: 2px solid #aaa;
+      border-radius: 8px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .positive { color: green; }
+    .negative { color: red; }
+    .neutral { color: gray; }
+  </style>
+</head>
+<body>
+  <h2>🧠 Sentiment Analysis Tool</h2>
+  <p>Type your feedback and click “Analyze” to see if it's Positive, Negative, or Neutral.</p>
+
+  <textarea id="feedback" placeholder="Write your feedback here..."></textarea><br>
+  <button id="analyzeBtn">Analyze Sentiment</button>
+
+  <div id="result"></div>
+
+
+
+
+  <script>
+    // When the button is clicked, call analyzeSentiment()
+    document.getElementById('analyzeBtn').addEventListener('click', analyzeSentiment);
+
+    function analyzeSentiment() {
+      const feedbackBox = document.getElementById('feedback');
+      const text = feedbackBox.value.toLowerCase().trim();
+      const resultDiv = document.getElementById('result');
+
+      if (text === '') {
+        resultDiv.textContent = 'Please write valid text!';
+        resultDiv.className = 'neutral';
+        return;
+      }
+
+      // Word lists
+      const positiveWords = ['good','great','awesome','happy','love','excellent','nice','fantastic','wonderful','best'];
+      const negativeWords = ['bad','terrible','awful','sad','hate','poor','worst','disappointing','angry','problem'];
+
+      let score = 0;
+      let foundWord = false;
+
+      // Check for positive words
+      positiveWords.forEach(word => {
+        if (text.includes(word)) {
+          score++;
+          foundWord = true;
+        }
+      });
+
+      // Check for negative words
+      negativeWords.forEach(word => {
+        if (text.includes(word)) {
+          score--;
+          foundWord = true;
+        }
+      });
+
+      // Show result
+      if (!foundWord) {
+        resultDiv.textContent = 'No valid sentiment words detected!';
+        resultDiv.className = 'neutral';
+      } else if (score > 0) {
+        resultDiv.textContent = 'Sentiment: Positive 😊';
+        resultDiv.className = 'positive';
+      } else if (score < 0) {
+        resultDiv.textContent = 'Sentiment: Negative 😞';
+        resultDiv.className = 'negative';
+      } else {
+        resultDiv.textContent = 'Sentiment: Neutral 😐';
+        resultDiv.className = 'neutral';
+      }
+
+      feedbackBox.value = ''; // Clear after analyzing
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Details</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      /* Using the new font */
+      font-family: 'Roboto', Arial, sans-serif;
+      background-color: #f4f7f6;
+      margin: 0;
+      padding: 30px;
+      color: #333;
+    }
+
+    /* A container to center the content and give it a max-width */
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      overflow: hidden; /* Clips the table corners */
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      padding: 20px 0;
+      margin: 0;
+      background-color: #fdfdfd;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    table {
+      margin: 0; /* Reset margin as container handles it */
+      border-collapse: collapse;
+      width: 100%; /* Table fills the container */
+    }
+
+    th, td {
+      /* Increased padding for more breathing room */
+      padding: 15px 20px;
+      /* Left-align text in cells for better readability */
+      text-align: left;
+      /* Using a subtle bottom border instead of all-around borders */
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      /* A more modern blue header */
+      background-color: #3498db;
+      color: white;
+      font-weight: 500;
+      text-align: center; /* Keep headers centered */
+    }
+
+    /* Zebra-striping for easier row tracking */
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    /* Hover effect for interactivity */
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* Remove bottom border from the last row in the table body */
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 30px; /* More space from content */
+      font-size: 0.9em;
+      color: #888;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>Student Details</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Roll No</th>
+          <th>Name</th>
+          <th>Course</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:center;">101</td> <td>Rahul</td>
+          <td>B.Tech - AI & DS</td>
+          <td>adarsh@example.com</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">102</td>
+          <td>Priya Singh</td>
+          <td>BCA</td>
+          <td>priya@example.com</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">103</td>
+          <td>Ravi Kumar</td>
+          <td>B.Sc (CS)</td>
+          <td>ravi@example.com</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    © 2025 Student Info Page
+  </footer>
+
+</body>
+</html>
